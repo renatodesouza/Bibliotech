@@ -20,4 +20,4 @@ Sistema web desenvolvido com Django para gerenciamento de biblioteca pessoal, pe
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/SEU-USUARIO/bibliotech.git](https://github.com/SEU-USUARIO/bibliotech.git)
+   git clone [https://github.com/SEU-USUARIO/bibliotech.git](https://github.com/renatodesouza/Bibliotech.git)
