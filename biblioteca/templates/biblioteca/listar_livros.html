@@ -1,0 +1,33 @@
+<DOCTYPE html>
+
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Biblioteca - Meus Livros</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .livros-card { border: 1px solid #ccc; padding: 15px; margin-bottom: 10px; border-radius: 5px; }
+        .status-L { color: green; font-weight: bold; } /* Lendo */
+        .status-P { color: orange; } /* Para ler */
+        .status-F { color: blue; } /* Finalizado */
+    </style>
+</head>
+<body>
+    <h1>Minha biblioteca</h1>
+    <hr>
+
+    {% if livros %}
+        {% for livro in livros %}
+            <div class="livro-card">
+                <h2>{{ livro.titulo }}</h2>
+                <p><strong>Autor:</strong>{{ livro.autor.nome }}</p>
+                <p><strong>Ano:</strong>{{ livro.ano_publicacao }}</p>
+
+                <p>Status: <span class="status-{{ livro.status }}">{{ livro.get_status_display }}</span></p>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Nenhum livro cadastrado ainda.</p>
+    {% endif %}
+</body>
+</html>
