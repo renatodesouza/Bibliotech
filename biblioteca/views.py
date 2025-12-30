@@ -1,5 +1,6 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from .models import Livro, Autor, Resenha
 from .serializers import AutorSerializer, LivroSerializer, ResenhaSerializer
 
@@ -19,6 +20,14 @@ class AutorViewSet(viewsets.ModelViewSet):
 class LivroViewSet(viewsets.ModelViewSet):
     queryset = Livro.objects.all()
     serializer_class = LivroSerializer
+
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+
+    filterset_fields = ['status', 'autor']
+
+    search_fields = ['titulo', 'autor__nome']
+
+    ordering_fields = ['titulo', 'ano_publicacao']
 
 class ResenhaViewSet(viewsets.ModelViewSet):
     queryset = Resenha.objects.all()
