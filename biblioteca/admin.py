@@ -23,10 +23,9 @@ class AutorAdmin(admin.ModelAdmin):
 class ResenhaAdmin(admin.ModelAdmin):
     list_display = ('livro', 'texto', 'nota', 'data_resenha')
 
-    search_fields = ('livro', 'data_resenha')
+    search_fields = ('livro',)
 
     fieldsets = [
-        ('Livro',       {'fields':('livros', 'nota')}),
+        ('Livro',       {'fields':('livro', 'nota')}),
         ('Texto',       {'fields':('texto',)}),
-        ('Data',        {'fields':('data_resenha',)})
     ]
