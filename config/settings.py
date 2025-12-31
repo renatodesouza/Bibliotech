@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'django_filters',
+    'drf_spectacular',
     'biblioteca',
 ]
 
@@ -124,3 +125,20 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+REST_FRAMEWORK = {
+    # Essa linha diz ao DRF: "Use o Spectacular para gerar a documentação"
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    
+    # Mantendo suas configurações de filtro que fizemos antes (não apague elas!)
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ],
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Bibliotech API',
+    'DESCRIPTION': 'API para gerenciamento de livros e resenhas pessoais.',
+    'VERSION': '1.0.0',
+}
