@@ -40,3 +40,18 @@ class LivroViewSet(viewsets.ModelViewSet):
 class ResenhaViewSet(viewsets.ModelViewSet):
     queryset = Resenha.objects.all()
     serializer_class = ResenhaSerializer
+
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+
+    # gte (Greater Than or Equal): Maior ou igual a (A partir de...).
+    # lte (Less Than or Equal): Menor ou igual a (Até...).
+    # year: Filtra apenas pelo ano, ignorando o mês/dia.
+    
+    filterset_fields = {
+        'livro':['exact'],
+        'nota':['exact', 'gte', 'lte'],
+        'data_resenha':['gte', 'lte', 'year', 'month']
+    }
+
+
+    ordering_fields = ['nota', 'data_resenha']
