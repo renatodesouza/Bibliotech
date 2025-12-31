@@ -131,6 +131,11 @@ REST_FRAMEWORK = {
     # Essa linha diz ao DRF: "Use o Spectacular para gerar a documentação"
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     
+    # Adicione a configuração de AUTENTICAÇÃO
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
     # Mantendo suas configurações de filtro que fizemos antes (não apague elas!)
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
