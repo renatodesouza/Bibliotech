@@ -18,6 +18,8 @@ class AutorViewSet(viewsets.ModelViewSet):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
 
+    permission_classes = [IsAuthenticated]
+
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
     filterset_fields = ['nome']
@@ -43,6 +45,8 @@ class LivroViewSet(viewsets.ModelViewSet):
 class ResenhaViewSet(viewsets.ModelViewSet):
     queryset = Resenha.objects.all()
     serializer_class = ResenhaSerializer
+
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
 
