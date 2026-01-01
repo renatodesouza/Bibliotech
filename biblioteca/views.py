@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import viewsets, filters
+from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from .models import Livro, Autor, Resenha
 from .serializers import AutorSerializer, LivroSerializer, ResenhaSerializer
@@ -17,6 +18,8 @@ class AutorViewSet(viewsets.ModelViewSet):
     queryset = Autor.objects.all()
     serializer_class = AutorSerializer
 
+    permission_classes = [IsAuthenticated]
+
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
     filterset_fields = ['nome']
@@ -29,6 +32,8 @@ class LivroViewSet(viewsets.ModelViewSet):
     queryset = Livro.objects.all()
     serializer_class = LivroSerializer
 
+    permission_classes = [IsAuthenticated]
+
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
 
     filterset_fields = ['status', 'autor']
@@ -40,6 +45,8 @@ class LivroViewSet(viewsets.ModelViewSet):
 class ResenhaViewSet(viewsets.ModelViewSet):
     queryset = Resenha.objects.all()
     serializer_class = ResenhaSerializer
+
+    permission_classes = [IsAuthenticated]
 
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
 
