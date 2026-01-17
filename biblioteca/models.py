@@ -6,6 +6,9 @@ class Autor(models.Model):
     nome = models.CharField(max_length=100)
     biografia = models.TextField(blank=True, null=True)
 
+    class Meta:
+        verbose_name_plural = 'Autores'
+
     def __str__(self):
         return self.nome
     
@@ -22,6 +25,8 @@ class Livro(models.Model):
     ano_publicacao = models.IntegerField()
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     criado_em = models.DateTimeField(auto_now_add=True)
+
+    
 
     def __str__(self):
         return f'{self.titulo} {self.autor.nome}'

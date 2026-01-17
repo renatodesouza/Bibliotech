@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from django.db.models import Avg
 from .models import Autor, Livro, Resenha
 
 
@@ -10,9 +11,17 @@ class AutorSerializer(serializers.ModelSerializer):
 class LivroSerializer(serializers.ModelSerializer):
     # Isso mostra o nome do autor em vez de apenas o ID
     autor_nome = serializers.ReadOnlyField(source='autor.nome')
+
+    media_notas = serializers.SerializerMethodField()
+
     class Meta:
         model = Livro
         fields = '__all__'
+
+    def get_media_notas(self, obj):
+        media = obj.resenha.aggregate(Avg('nota'))['nota__avg']
+
+        return round(media, 1) if media else 0
 
 class ResenhaSerializer(serializers.ModelSerializer):
     class Meta:
