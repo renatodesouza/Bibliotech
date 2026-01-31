@@ -20,6 +20,8 @@ class LivroSerializer(serializers.ModelSerializer):
 
     media_notas = serializers.SerializerMethodField()
 
+    usuario = serializers.ReadOnlyField(source='usuario.username')
+
     class Meta:
         model = Livro
         fields = '__all__'
