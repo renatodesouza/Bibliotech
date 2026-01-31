@@ -1,0 +1,64 @@
+service:
+  # Banco de dados da API
+  db:
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data 
+    environment:
+      - POSTGRES_DB = biblioteca_db
+      - POSTGRES_USER = admin
+      - POSTGRES_PASSWORD = senha_forte
+    ports:
+      - "54325432"
+
+  # Broker para tarefas assíncronas
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+
+  # Banco vetorial para IA
+
+  chromadb:
+    image: chromadb/chroma:latest
+    volumes:
+      - ./chroma_data:chroma/chroma
+    ports:
+      - "8001:8000"
+
+  # Aplicações Django
+  web:
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgres://admin:senha_forte@db:5432/biblioteca_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CHROMA_HOST=chromadb
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - db
+      - redis
+      - chromadb
+
+# Worker do Celery para processar PDFs e IA em background
+  celery:
+    build: .
+    command: celery -A seu_projeto_name worker --loglevel=info
+    volumes:
+      - .:/app
+    environment:
+      - DATABASE_URL=postgres://admin:senha_forte@db:5432/biblioteca_db
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+    depends_on:
+      - db
+      - redis
+      - chromadb
+
+volumes:
+  postgres_data:
