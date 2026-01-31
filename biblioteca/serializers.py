@@ -4,9 +4,15 @@ from .models import Autor, Livro, Resenha
 
 
 class AutorSerializer(serializers.ModelSerializer):
+
+    total_livros = serializers.SerializerMethodField()
     class Meta:
         model = Autor
         fields = '__all__'
+
+    def get_total_livros(self, obj):
+        # obj.livros vem do related_name='livros'
+        return obj.livros.count()
 
 class LivroSerializer(serializers.ModelSerializer):
     # Isso mostra o nome do autor em vez de apenas o ID
