@@ -42,6 +42,18 @@ class LivroViewSet(viewsets.ModelViewSet):
 
     ordering_fields = ['titulo', 'ano_publicacao']
 
+    def get_queryset(self):
+        # pega o usuário que está logado
+        user = self.request.user
+
+        # Retorna apenas os livros do usuário logado
+        return Livro.objects.filter(usuario=user)
+    
+    # Cria um livro sem pedir o ID do usuário pelo Json
+    # o backend vai injetar o usuário logado automatiocamente
+    def perform_create(self, serializer):
+        serializer.save(usuario=self.request.user)
+
 class ResenhaViewSet(viewsets.ModelViewSet):
     queryset = Resenha.objects.all()
     serializer_class = ResenhaSerializer
