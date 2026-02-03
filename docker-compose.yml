@@ -39,7 +39,7 @@ service:
       - DATABASE_URL=postgres://admin:senha_forte@db:5432/biblioteca_db
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CHROMA_HOST=chromadb
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OPENAI_API_KEY=${AIzaSyDFz8QQzpsBb9PtIk2V4udPKOYrGewYkz0}
     depends_on:
       - db
       - redis
