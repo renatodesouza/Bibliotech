@@ -1,0 +1,26 @@
+# Git e Docker
+.git
+.gitignore
+.dockerignore
+docker-compose.yml
+Dockerfile
+
+# Python e Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.env
+venv/
+.venv/
+env/
+
+# Dados e IA (Isso é crucial!)
+# Não queremos levar os dados locais do Chroma ou Postgres para a imagem
+chroma_data/
+postgres_data/
+chroma_db/
+db.sqlite3
+
+# Documentos e Mídia (Leve apenas o necessário)
+media/
+static/
