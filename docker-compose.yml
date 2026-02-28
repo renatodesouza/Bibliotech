@@ -1,60 +1,64 @@
-service:
+services:
   # Banco de dados da API
   db:
     image: postgres:15-alpine
     volumes:
       - postgres_data:/var/lib/postgresql/data 
     environment:
-      - POSTGRES_DB = biblioteca_db
-      - POSTGRES_USER = admin
-      - POSTGRES_PASSWORD = senha_forte
+      - POSTGRES_DB=biblioteca_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=senha_forte
     ports:
-      - "54325432"
+      - "5432:5432"
 
   # Broker para tarefas assíncronas
-
   redis:
     image: redis:7-alpine
     ports:
       - "6379:6379"
 
   # Banco vetorial para IA
-
   chromadb:
     image: chromadb/chroma:latest
     volumes:
-      - ./chroma_data:chroma/chroma
+      - ./chroma_data:/chroma/chroma
     ports:
       - "8001:8000"
 
   # Aplicações Django
   web:
     build: .
+    env_file:
+      - .env
     command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/app
+      - ./media:/biblioteca/media
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=postgres://admin:senha_forte@db:5432/biblioteca_db
+      - DATABASE_URL=${DATABASE_URL}
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CHROMA_HOST=chromadb
-      - OPENAI_API_KEY=${AIzaSyDFz8QQzpsBb9PtIk2V4udPKOYrGewYkz0}
+      # CORREÇÃO 1: Use o nome da variável, não o valor da chave aqui
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
       - db
       - redis
       - chromadb
 
-# Worker do Celery para processar PDFs e IA em background
+  # Worker do Celery
   celery:
     build: .
-    command: celery -A seu_projeto_name worker --loglevel=info
+    # CORREÇÃO 2: Verifique se o nome do projeto está correto (ex: bibliotech)
+    command: celery -A bibliotech worker --loglevel=info
     volumes:
       - .:/app
+      - ./media:/biblioteca/media
     environment:
-      - DATABASE_URL=postgres://admin:senha_forte@db:5432/biblioteca_db
+      - DATABASE_URL=${DATABASE_URL}
       - CELERY_BROKER_URL=redis://redis:6379/0
-      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - GOOGLE_API_KEY=${GOOGLE_API_KEY}
     depends_on:
       - db
       - redis
