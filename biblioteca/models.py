@@ -27,6 +27,7 @@ class Livro(models.Model):
     status = models.CharField(max_length=1, choices=STATUS_CHOICES, default='P')
     criado_em = models.DateTimeField(auto_now_add=True)
     usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='livros')
+    arquivo = models.FileField(upload_to='livros/', null=True, blank=True)
 
     
 
