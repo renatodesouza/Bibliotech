@@ -169,6 +169,12 @@ cython_debug/
 .vscode
 .vscode/
 
+chroma_db/
+chroma_data/
+__pycache__/
+*.sqlite3
+.env
+media/
 # PyCharm
 #  JetBrains specific template is maintained in a separate JetBrains.gitignore that can
 #  be found at https://github.com/github/gitignore/blob/main/Global/JetBrains.gitignore
