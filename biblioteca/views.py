@@ -1,4 +1,8 @@
 from django.shortcuts import render
+from django.http import JsonResponse
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from biblioteca.servicies.ai_service import AIService
 from rest_framework import viewsets, filters
 from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
@@ -74,3 +78,26 @@ class ResenhaViewSet(viewsets.ModelViewSet):
 
 
     ordering_fields = ['nota', 'data_resenha']
+
+
+class ChatLivroView(APIView):
+    def post(self, request, livro_id):
+        pergunta = request.data.get('pergunta')
+        
+        if not pergunta:
+            return Response({"erro": "A pergunta é obrigatória."}, status=400)
+            
+        try:
+            ai = AIService()
+            resultado = ai.ask_book(book_id=livro_id, question=pergunta)
+            return Response(resultado)
+            
+        except Exception as e:
+            print(f"========== ERRO DA API DO GOOGLE ==========\n{str(e)}\n===========================================")
+            # Se for erro de cota (429), enviamos uma mensagem limpa
+            if "429" in str(e):
+                return Response({
+                    "erro": "Limite de requisições atingido. Aguarde 30 segundos e tente novamente."
+                }, status=429)
+            
+            return Response({"erro": str(e)}, status=500)

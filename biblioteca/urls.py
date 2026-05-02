@@ -12,6 +12,6 @@ router.register(r'resenha', views.ResenhaViewSet)
 
 urlpatterns = [
     path('', views.listar_livros, name='listar_livros'),
-
+    path('livros/<int:livro_id>/chat/', views.ChatLivroView.as_view(), name='chat-livro'),
     path('api/', include(router.urls)),
 ]
