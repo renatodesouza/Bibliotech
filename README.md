@@ -86,29 +86,47 @@ Como o projeto utiliza múltiplos serviços (Banco, Redis, Celery, ChromaDB), a 
 ```bash
 git clone [https://github.com/renatodesouza/Bibliotech.git](https://github.com/renatodesouza/Bibliotech.git)
 cd Bibliotech
+```
+**2. Configure as variáveis de ambiente:**
 
-2. Configure as variáveis de ambiente:
 Crie um arquivo .env na raiz do projeto contendo as credenciais do banco e a sua chave da API do Google AI:
 
 Snippet de código
+```bash
 GOOGLE_API_KEY=sua_chave_aqui_gerada_no_google_ai_studio
 # (Adicione outras variáveis de banco de dados conforme necessário)
-3. Suba a infraestrutura completa:
+```
 
-Bash
+**3. Suba a infraestrutura completa:**
+
+```bash
 docker-compose up -d --build
-4. Execute as migrations e crie o superusuário:
+```
 
-Bash
+**4. Execute as migrations e crie o superusuário:**
+
+```bash
 docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py createsuperuser
-5. Acesse os serviços:
+```
 
-API/Aplicação Web: http://localhost:8000/
+**5. Acesse os serviços:**
 
-Swagger (Documentação): http://localhost:8000/api/docs/
+API/Aplicação Web: 
+```bash
+http://localhost:8000/
+```
 
-ChromaDB (API Local): http://localhost:8000 (Porta interna do container, exposta pelo docker-compose)
+Swagger (Documentação):
+```bash
+http://localhost:8000/api/docs/
+```
+
+ChromaDB (API Local): 
+(Porta interna do container, exposta pelo docker-compose)
+```bash
+http://localhost:8000
+```
 
 📌 Observações de versionamento
 A main contém apenas código estável.
